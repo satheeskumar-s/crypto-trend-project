@@ -1,10 +1,8 @@
-import NavBar from "../shared/NavBar";
-import React from "react";
+import NavBar from '../shared/NavBar';
+import React from 'react';
 
 const Layout = () => {
-  return(
-      <NavBar />
-  )
-}
+  return <NavBar />;
+};
 
 export default Layout;
