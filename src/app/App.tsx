@@ -1,8 +1,8 @@
 import React from 'react';
-import '../scss/app.scss';
 
 import { createTheme, CssBaseline, ThemeProvider } from '@mui/material';
 import Layout from './components/layout/Layout';
+import RenderRoutes from './providers/RenderRoutes';
 
 function App() {
   const materialTheme = createTheme(/* your theme */);
@@ -15,7 +15,9 @@ function App() {
     <div className='App'>
       <ThemeProvider theme={materialTheme}>
         <CssBaseline />
-        <Layout />
+        <Layout>
+          <RenderRoutes />
+        </Layout>
       </ThemeProvider>
     </div>
   );
