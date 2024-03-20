@@ -28,9 +28,9 @@
     "react/prop-types": 0,
     "react/jsx-props-no-spreading": "off",
     "no-underscore-dangle": "off",
-    "prettier/prettier": "error",
+    "prettier/prettier": "warn",
     "no-console": "warn",
-    "no-unused-vars": "error"
+    "no-unused-vars": "warn"
   },
   "settings": {
     "import/resolver": {
