@@ -1,4 +1,4 @@
-import routes, { RouteType } from '../../../providers/RouteProvider';
+import routes, { RouteType } from '../../../providers/route/RouteProvider';
 import React from 'react';
 import MenuItem from '@mui/material/MenuItem';
 import Typography from '@mui/material/Typography';

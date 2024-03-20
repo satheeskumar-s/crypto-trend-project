@@ -23,7 +23,7 @@ const LogoIcon = (props: {
         variant='h6'
         noWrap
         component='a'
-        onClick={() => props.onClickMenu('/trends')}
+        onClick={() => props.onClickMenu('/crypto-currency')}
         sx={{
           mr: mr,
           flexGrow: 1,

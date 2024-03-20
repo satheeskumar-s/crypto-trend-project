@@ -34,7 +34,7 @@ function NavBar() {
   };
 
   return (
-    <AppBar position='static'>
+    <AppBar position='static' className='App'>
       <Container maxWidth='xl'>
         <Toolbar disableGutters>
           <LogoIcon logoName={logoName} onClickMenu={onClickMenu} />

@@ -7,9 +7,9 @@ import {
   TrendingUp,
 } from '@mui/icons-material';
 
-import Trend from '../pages/Trend';
-import About from '../pages/About';
-import CryptoCurrency from '../pages/CryptoCurrency';
+import Trend from '../../pages/Trend';
+import About from '../../pages/About';
+import CryptoCurrency from '../../pages/CryptoCurrency';
 
 export type RouteType = {
   url: string;
@@ -19,16 +19,16 @@ export type RouteType = {
 };
 const routes: Array<RouteType> = [
   {
-    url: '/trends',
-    label: 'Trends',
-    icon: TrendingUp,
-    component: <Trend />,
-  },
-  {
     url: '/crypto-currency',
     label: 'Crypto currencies',
     icon: CurrencyBitcoin,
     component: <CryptoCurrency />,
+  },
+  {
+    url: '/trends',
+    label: 'Trends',
+    icon: TrendingUp,
+    component: <Trend />,
   },
   {
     url: '/about',

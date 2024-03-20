@@ -14,7 +14,7 @@ const RenderRoutes = () => {
           />
         );
       })}
-      <Route path='*' element={<Navigate to='/trends' />} />
+      <Route path='*' element={<Navigate to='/crypto-currency' />} />
     </Routes>
   );
 };
