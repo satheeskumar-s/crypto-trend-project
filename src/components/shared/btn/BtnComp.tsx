@@ -11,7 +11,6 @@ const BtnComp = (props: {
   return (
     <Button
       className='btn-comp'
-      key={props.key}
       onClick={props.onClick}
       startIcon={props.startIcon}
     >

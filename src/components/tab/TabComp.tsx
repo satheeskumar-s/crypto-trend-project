@@ -1,8 +1,7 @@
 import React, { ReactNode, useState } from 'react';
 import Tabs from '@mui/material/Tabs';
-import Tab, { TabProps } from '@mui/material/Tab';
+import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
 
 const TabComp = (props: {
   tabs: Array<{ id: number; label: string }>;
@@ -11,7 +10,6 @@ const TabComp = (props: {
   const [value, setValue] = useState(0);
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
-    console.log('>>>', { newValue });
     setValue(newValue);
   };
 
@@ -32,17 +30,13 @@ const TabComp = (props: {
         aria-labelledby={`simple-tab-${index}`}
         {...other}
       >
-        {value === index && (
-          <Box sx={{ p: 3 }}>
-            <Typography>{children}</Typography>
-          </Box>
-        )}
+        {value === index && <Box sx={{ p: 2 }}>{children}</Box>}
       </div>
     );
   };
 
   return (
-    <Box sx={{ maxWidth: { xs: 320, sm: 480 }, bgcolor: 'background.paper' }}>
+    <Box sx={{ bgcolor: 'background.paper' }}>
       <Tabs
         value={value}
         onChange={handleChange}
