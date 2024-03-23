@@ -32,11 +32,7 @@ const SearchCrypto = () => {
     return coins.concat(category);
   };
 
-  const onInputChange = (
-    event: React.SyntheticEvent,
-    option: string,
-    reason: string
-  ) => {
+  const onInputChange = (event: React.SyntheticEvent, option: string) => {
     const fetchUrl = coingeckoApi.search(option);
     fetch(fetchUrl.url, {
       headers: fetchUrl.headers,
