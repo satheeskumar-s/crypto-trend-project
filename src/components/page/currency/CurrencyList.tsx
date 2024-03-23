@@ -125,6 +125,7 @@ const CurrencyList = () => {
         disableColumnFilter
         disableColumnMenu
         paginationMode='server'
+        rowHeight={75}
       />
     </div>
   );
