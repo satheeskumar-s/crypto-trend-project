@@ -4,6 +4,7 @@ import { showErrorNotification } from '../../../helper/Messages';
 import { coingeckoApi } from '../../../providers/api/coingecko';
 import { AlertComp } from '../../shared/message/AlertComp';
 import { columns } from './CategoryColumn';
+import axios from 'axios';
 
 const CategoryList = () => {
   const [error, setError] = useState('');
@@ -16,14 +17,11 @@ const CategoryList = () => {
 
   const getCategoryData = () => {
     const fetchUrl = coingeckoApi.categories.markets;
-    fetch(fetchUrl.url, {
+    axios(fetchUrl.url, {
       headers: fetchUrl.headers,
     })
       .then((data) => {
-        return data.json();
-      })
-      .then((data) => {
-        setData(data);
+        setData(data.data);
       })
       .catch(() => {
         setErr('Something went wrong when get data');

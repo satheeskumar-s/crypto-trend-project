@@ -9,6 +9,7 @@ import GroupItems from '../../shared/autoComplete/GroupItems';
 import Box from '@mui/material/Box';
 import ListIcon from '@mui/icons-material/List';
 import { AlertComp } from '../../shared/message/AlertComp';
+import axios from 'axios';
 
 const SearchCrypto = () => {
   const [error, setError] = useState('');
@@ -34,15 +35,13 @@ const SearchCrypto = () => {
 
   const onInputChange = (event: React.SyntheticEvent, option: string) => {
     const fetchUrl = coingeckoApi.search(option);
-    fetch(fetchUrl.url, {
+    axios(fetchUrl.url, {
       headers: fetchUrl.headers,
+      params: fetchUrl.data,
     })
       .then((data) => {
-        return data.json();
-      })
-      .then((data) => {
         setError('');
-        setOptions(prepareOption(data));
+        setOptions(prepareOption(data.data));
       })
       .catch(() => {
         setError('Something went wrong when get data');

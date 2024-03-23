@@ -5,6 +5,7 @@ import { coingeckoApi } from '../../../providers/api/coingecko';
 import { AlertComp } from '../../shared/message/AlertComp';
 import { defaultPerPage } from '../../../config/pagination';
 import { columns } from './TrendColumn';
+import axios from 'axios';
 
 const TrendList = () => {
   const [error, setError] = useState('');
@@ -17,15 +18,12 @@ const TrendList = () => {
 
   const getTrendData = () => {
     const fetchUrl = coingeckoApi.trend;
-    fetch(fetchUrl.url, {
+    axios(fetchUrl.url, {
       headers: fetchUrl.headers,
     })
       .then((data) => {
-        return data.json();
-      })
-      .then((data) => {
-        if (data.coins) {
-          setData(data.coins.map((eachCoin: any) => eachCoin.item));
+        if (data.data.coins) {
+          setData(data.data.coins.map((eachCoin: any) => eachCoin.item));
         } else {
           setData([]);
         }

@@ -90,7 +90,7 @@ export const columns: GridColDef[] = [
     field: 'sparkline_in_7d',
     headerName: '7 Days activity',
     sortable: false,
-    width: 160,
+    width: 200,
     valueGetter: (params: GridValueGetterParams) =>
       params.row.sparkline_in_7d.price,
     renderCell: (params) => <GridSparklineCell {...params} plotType='line' />,

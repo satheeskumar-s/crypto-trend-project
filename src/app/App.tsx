@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 
 import { createTheme, CssBaseline, ThemeProvider } from '@mui/material';
 import Layout from '../components/layout/Layout';
 import RenderRoutes from '../providers/route/RenderRoutes';
 import { Toaster } from 'react-hot-toast';
+import { registerInterceptors } from '../middleware/AxiosInterceptors';
 
 function App() {
   const materialTheme = createTheme(/* your theme */);
@@ -12,6 +13,11 @@ function App() {
   //     mode: 'dark',
   //   },
   // });
+
+  useMemo(() => {
+    registerInterceptors();
+  }, []);
+
   return (
     <ThemeProvider theme={materialTheme}>
       <CssBaseline />

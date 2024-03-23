@@ -6,11 +6,11 @@ import {
 } from '@mui/x-data-grid/models/gridSortModel';
 import { GridPaginationModel } from '@mui/x-data-grid/models/gridPaginationProps';
 
-import { showErrorNotification } from '../../../helper/Messages';
 import { coingeckoApi } from '../../../providers/api/coingecko';
 import { AlertComp } from '../../shared/message/AlertComp';
 import { defaultPerPage } from '../../../config/pagination';
 import { columns } from './CurrencyColumn';
+import axios from 'axios';
 
 const CurrencyList = () => {
   const [error, setError] = useState('');
@@ -31,7 +31,6 @@ const CurrencyList = () => {
 
   function setErr(msg: string) {
     setError(msg);
-    showErrorNotification(msg);
   }
 
   /**
@@ -40,14 +39,11 @@ const CurrencyList = () => {
    */
   const setTotalCountAndGetData = () => {
     const fetchUrl = coingeckoApi.coins.list;
-    fetch(fetchUrl.url, {
+    axios(fetchUrl.url, {
       headers: fetchUrl.headers,
     })
       .then((data) => {
-        return data.json();
-      })
-      .then((data) => {
-        const totalCount = data.length;
+        const totalCount = data?.data?.length;
 
         if (totalCount > 0) {
           setRowCount(totalCount);
@@ -64,14 +60,12 @@ const CurrencyList = () => {
 
   const getCoinsData = () => {
     const fetchUrl = coingeckoApi.coins.markets(paginationModel, sortModel);
-    fetch(fetchUrl.url, {
+    axios(fetchUrl.url, {
       headers: fetchUrl.headers,
+      params: fetchUrl.data,
     })
       .then((data) => {
-        return data.json();
-      })
-      .then((data) => {
-        setData(data);
+        setData(data.data);
       })
       .catch(() => {
         setErr('Something went wrong when get data');
@@ -125,7 +119,7 @@ const CurrencyList = () => {
         disableColumnFilter
         disableColumnMenu
         paginationMode='server'
-        rowHeight={75}
+        rowHeight={100}
       />
     </div>
   );
