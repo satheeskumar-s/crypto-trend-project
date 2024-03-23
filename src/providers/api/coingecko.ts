@@ -10,7 +10,7 @@ const prepareUrl = (
   headers: Headers;
 } => {
   const requestHeaders: HeadersInit = new Headers();
-  requestHeaders.set('Content-Type', 'application/json');
+  requestHeaders.set('Accept', 'application/json');
 
   return {
     url: `${host}${endpoint}`,
@@ -26,5 +26,9 @@ export const coingeckoApi = {
         `coins/markets?vs_currency=usd&price_change_percentage=1h,24h,7d&precision=2&sparkline=true&page=${paginationModel.page + 1}&per_page=${paginationModel.pageSize}&order=${sortModel[0].field}_${sortModel[0].sort}`
       ),
   },
-  search: prepareUrl('search'),
+  categories: {
+    markets: prepareUrl(`coins/categories`),
+  },
+  search: (text: string) => prepareUrl(`search?query=${text}`),
+  trend: prepareUrl('search/trending'),
 };

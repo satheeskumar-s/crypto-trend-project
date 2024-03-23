@@ -30,7 +30,8 @@
     "no-underscore-dangle": "off",
     "prettier/prettier": "warn",
     "no-console": "warn",
-    "no-unused-vars": "warn"
+    "no-unused-vars": "warn",
+    "no-explicit-any": "off"
   },
   "settings": {
     "import/resolver": {

@@ -1,7 +1,9 @@
 import React from 'react';
 import TitleComp from '../components/shared/page/TitleComp';
 import TabComp from '../components/tab/TabComp';
-import Currency from '../components/page/Currency';
+import CurrencyList from '../components/page/currency/CurrencyList';
+import SearchCrypto from '../components/page/search/SearchCrypto';
+import CategoryList from '../components/page/category/CategoryList';
 
 const CryptoCurrency = () => {
   const tabs = [
@@ -12,19 +14,16 @@ const CryptoCurrency = () => {
   const tabContent = [
     {
       id: 0,
-      content: (
-        <div>
-          <Currency />
-        </div>
-      ),
+      content: <CurrencyList />,
     },
-    { id: 1, content: <div>bb</div> },
+    { id: 1, content: <CategoryList /> },
   ];
 
   return (
     <>
       <TitleComp title='Crypto currencies' />
 
+      <SearchCrypto />
       <TabComp tabs={tabs} tabContent={tabContent} />
     </>
   );
