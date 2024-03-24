@@ -5,8 +5,10 @@ import { coingeckoApi } from '../../../providers/api/coingecko';
 import { AlertComp } from '../../shared/message/AlertComp';
 import { columns } from './CategoryColumn';
 import axios from 'axios';
+import { LinearProgress } from '@mui/material';
 
 const CategoryList = () => {
+  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   const [data, setData] = useState([]);
 
@@ -16,14 +18,17 @@ const CategoryList = () => {
   }
 
   const getCategoryData = () => {
+    setIsLoading(true);
     const fetchUrl = coingeckoApi.categories.markets;
     axios(fetchUrl.url, {
       headers: fetchUrl.headers,
     })
       .then((data) => {
+        setIsLoading(false);
         setData(data.data);
       })
       .catch(() => {
+        setIsLoading(false);
         setErr('Something went wrong when get data');
       });
   };
@@ -42,6 +47,11 @@ const CategoryList = () => {
         pageSizeOptions={[50, 100]}
         disableColumnFilter
         disableColumnMenu
+        disableRowSelectionOnClick
+        loading={isLoading}
+        slots={{
+          loadingOverlay: LinearProgress,
+        }}
       />
     </div>
   );

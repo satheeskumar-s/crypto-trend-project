@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { DataGrid } from '@mui/x-data-grid';
 import {
   GridSortDirection,
   GridSortModel,
@@ -11,8 +10,12 @@ import { AlertComp } from '../../shared/message/AlertComp';
 import { defaultPerPage } from '../../../config/pagination';
 import { columns } from './CurrencyColumn';
 import axios from 'axios';
+import { GridRowParams } from '@mui/x-data-grid/models/params';
+import { DataGrid } from '@mui/x-data-grid';
+import { LinearProgress } from '@mui/material';
 
 const CurrencyList = () => {
+  const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState('');
   const [data, setData] = useState([]);
   const [rowCount, setRowCount] = useState(13450);
@@ -39,6 +42,7 @@ const CurrencyList = () => {
    */
   const setTotalCountAndGetData = () => {
     const fetchUrl = coingeckoApi.coins.list;
+    setIsLoading(true);
     axios(fetchUrl.url, {
       headers: fetchUrl.headers,
     })
@@ -49,25 +53,30 @@ const CurrencyList = () => {
           setRowCount(totalCount);
           getCoinsData();
         } else {
+          setIsLoading(false);
           setErr('Something went wrong when getting count');
         }
       })
       .catch(() => {
         setRowCount(0);
+        setIsLoading(false);
         setErr('Something went wrong when getting count');
       });
   };
 
   const getCoinsData = () => {
+    setIsLoading(true);
     const fetchUrl = coingeckoApi.coins.markets(paginationModel, sortModel);
     axios(fetchUrl.url, {
       headers: fetchUrl.headers,
       params: fetchUrl.data,
     })
       .then((data) => {
+        setIsLoading(false);
         setData(data.data);
       })
       .catch(() => {
+        setIsLoading(false);
         setErr('Something went wrong when get data');
         setData([]);
       });
@@ -98,6 +107,10 @@ const CurrencyList = () => {
     setPaginationModel(model);
   };
 
+  const onRowClick = (params: GridRowParams) => {
+    // setPaginationModel(params);
+  };
+
   return (
     <div style={{ height: 400, width: '100%' }}>
       {error && <AlertComp msg={error} severity='error' />}
@@ -120,6 +133,11 @@ const CurrencyList = () => {
         disableColumnMenu
         paginationMode='server'
         rowHeight={100}
+        onRowClick={onRowClick}
+        loading={isLoading}
+        slots={{
+          loadingOverlay: LinearProgress,
+        }}
       />
     </div>
   );

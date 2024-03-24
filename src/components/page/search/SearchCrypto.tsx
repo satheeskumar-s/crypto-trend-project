@@ -10,8 +10,11 @@ import Box from '@mui/material/Box';
 import ListIcon from '@mui/icons-material/List';
 import { AlertComp } from '../../shared/message/AlertComp';
 import axios from 'axios';
+import { CircularProgress, Input, InputAdornment } from '@mui/material';
+import { AutocompleteInputChangeReason } from '@mui/base/useAutocomplete/useAutocomplete';
 
 const SearchCrypto = () => {
+  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   const [options, setOptions] = useState<any>([]);
 
@@ -33,31 +36,58 @@ const SearchCrypto = () => {
     return coins.concat(category);
   };
 
-  const onInputChange = (event: React.SyntheticEvent, option: string) => {
-    const fetchUrl = coingeckoApi.search(option);
-    axios(fetchUrl.url, {
-      headers: fetchUrl.headers,
-      params: fetchUrl.data,
-    })
-      .then((data) => {
-        setError('');
-        setOptions(prepareOption(data.data));
+  const onInputChange = (
+    event: React.SyntheticEvent,
+    option: string,
+    reason: AutocompleteInputChangeReason
+  ) => {
+    if (reason === 'input') {
+      setIsLoading(true);
+      const fetchUrl = coingeckoApi.search(option);
+      axios(fetchUrl.url, {
+        headers: fetchUrl.headers,
+        params: fetchUrl.data,
       })
-      .catch(() => {
-        setError('Something went wrong when get data');
-        setOptions([]);
-      });
+        .then((data) => {
+          setError('');
+          setIsLoading(false);
+          setOptions(prepareOption(data.data));
+        })
+        .catch(() => {
+          setError('Something went wrong when get data');
+          setIsLoading(false);
+          setOptions([]);
+        });
+    }
   };
 
   return (
     <>
       <Autocomplete
         id='crypto-search-auto-complete'
+        sx={{
+          pb: 3,
+        }}
         options={options}
         groupBy={(option: any) => option.type}
         getOptionLabel={(option) => option.name}
         renderInput={(params) => (
-          <TextField {...params} placeholder='Search Coins, catogry here' />
+          <TextField
+            {...params}
+            placeholder='Search Coins, catogry here'
+            InputProps={{
+              ...params.InputProps,
+              endAdornment: (
+                <>
+                  {isLoading && (
+                    <InputAdornment position='end'>
+                      <CircularProgress size={24} />
+                    </InputAdornment>
+                  )}
+                </>
+              ),
+            }}
+          />
         )}
         onInputChange={onInputChange}
         renderGroup={(params) => (

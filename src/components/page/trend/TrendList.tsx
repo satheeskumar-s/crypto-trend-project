@@ -6,8 +6,10 @@ import { AlertComp } from '../../shared/message/AlertComp';
 import { defaultPerPage } from '../../../config/pagination';
 import { columns } from './TrendColumn';
 import axios from 'axios';
+import { LinearProgress } from '@mui/material';
 
 const TrendList = () => {
+  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   const [data, setData] = useState([]);
 
@@ -17,11 +19,13 @@ const TrendList = () => {
   }
 
   const getTrendData = () => {
+    setIsLoading(true);
     const fetchUrl = coingeckoApi.trend;
     axios(fetchUrl.url, {
       headers: fetchUrl.headers,
     })
       .then((data) => {
+        setIsLoading(false);
         if (data.data.coins) {
           setData(data.data.coins.map((eachCoin: any) => eachCoin.item));
         } else {
@@ -29,6 +33,7 @@ const TrendList = () => {
         }
       })
       .catch(() => {
+        setIsLoading(false);
         setErr('Something went wrong when get data');
       });
   };
@@ -53,6 +58,11 @@ const TrendList = () => {
         disableColumnFilter
         disableColumnMenu
         rowHeight={75}
+        disableRowSelectionOnClick
+        loading={isLoading}
+        slots={{
+          loadingOverlay: LinearProgress,
+        }}
       />
     </div>
   );
