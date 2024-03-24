@@ -14,7 +14,13 @@ import { GridRowParams } from '@mui/x-data-grid/models/params';
 import { DataGrid } from '@mui/x-data-grid';
 import { LinearProgress } from '@mui/material';
 
-const CurrencyList = () => {
+const CurrencyList = (props: {
+  coinId: string;
+  setCoinId: any;
+  categoryId: string;
+  setCategoryId: any;
+}) => {
+  const { setCoinId, categoryId } = props;
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState('');
   const [data, setData] = useState([]);
@@ -66,7 +72,11 @@ const CurrencyList = () => {
 
   const getCoinsData = () => {
     setIsLoading(true);
-    const fetchUrl = coingeckoApi.coins.markets(paginationModel, sortModel);
+    const fetchUrl = coingeckoApi.coins.markets(
+      categoryId,
+      paginationModel,
+      sortModel
+    );
     axios(fetchUrl.url, {
       headers: fetchUrl.headers,
       params: fetchUrl.data,
@@ -108,7 +118,7 @@ const CurrencyList = () => {
   };
 
   const onRowClick = (params: GridRowParams) => {
-    // setPaginationModel(params);
+    setCoinId(params.id);
   };
 
   return (

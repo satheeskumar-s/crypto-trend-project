@@ -2,7 +2,8 @@ import { GridColDef, GridRenderCellParams } from '@mui/x-data-grid';
 import { GridValueGetterParams } from '@mui/x-data-grid/models/params/gridCellParams';
 import React from 'react';
 import { SparkLineChartProps } from '@mui/x-charts/SparkLineChart/SparkLineChart';
-import { SparkLineChart } from '@mui/x-charts';
+import SparkLineChartComp from '../../shared/graph/SparkLineChartComp';
+import Coin from '../../shared/page/Coin';
 
 const RenderTitle = (
   props: GridRenderCellParams & {
@@ -14,12 +15,11 @@ const RenderTitle = (
   }
 
   return (
-    <>
-      {props.value?.image && (
-        <img width={24} height={24} alt='1' src={props.value?.image} />
-      )}
-      {props.value?.name} ({props.value?.symbol})
-    </>
+    <Coin
+      name={props.value?.name}
+      symbol={props.value?.symbol}
+      image={props.value?.image}
+    />
   );
 };
 
@@ -33,10 +33,10 @@ const GridSparklineCell = (
   }
 
   return (
-    <SparkLineChart
+    <SparkLineChartComp
       data={props.value}
       width={props.colDef.computedWidth}
-      plotType={props.plotType}
+      plotType='line'
     />
   );
 };

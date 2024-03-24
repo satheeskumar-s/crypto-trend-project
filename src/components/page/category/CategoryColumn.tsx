@@ -2,6 +2,8 @@ import { GridColDef, GridRenderCellParams } from '@mui/x-data-grid';
 import { GridValueGetterParams } from '@mui/x-data-grid/models/params/gridCellParams';
 import React from 'react';
 import { SparkLineChartProps } from '@mui/x-charts/SparkLineChart/SparkLineChart';
+import { AvatarGroup } from '@mui/material';
+import Avatar from '@mui/material/Avatar';
 
 const RenderGainers = (
   props: GridRenderCellParams & {
@@ -10,18 +12,13 @@ const RenderGainers = (
 ) => {
   return (
     <>
-      {props.value?.top_3_coins &&
-        props.value?.top_3_coins.map((eachImage: string) => {
-          return (
-            <img
-              key={eachImage}
-              width={24}
-              height={24}
-              alt='1'
-              src={eachImage}
-            />
-          );
-        })}
+      {props.value?.top_3_coins && (
+        <AvatarGroup max={4}>
+          {props.value?.top_3_coins.map((eachImage: string) => {
+            return <Avatar key={eachImage} alt='eachImagep' src={eachImage} />;
+          })}
+        </AvatarGroup>
+      )}
     </>
   );
 };
@@ -41,7 +38,7 @@ export const columns: GridColDef[] = [
     valueGetter: (params: GridValueGetterParams) => params.row,
     renderCell: (params) => <RenderGainers {...params} />,
     sortable: false,
-    width: 150,
+    width: 200,
   },
   {
     field: 'market_cap',

@@ -54,7 +54,7 @@ const TrendList = () => {
             paginationModel: { page: 0, pageSize: defaultPerPage },
           },
         }}
-        pageSizeOptions={[10, 20]}
+        pageSizeOptions={[25, 50, 100]}
         disableColumnFilter
         disableColumnMenu
         rowHeight={75}

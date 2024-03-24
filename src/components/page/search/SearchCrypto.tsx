@@ -10,10 +10,17 @@ import Box from '@mui/material/Box';
 import ListIcon from '@mui/icons-material/List';
 import { AlertComp } from '../../shared/message/AlertComp';
 import axios from 'axios';
-import { CircularProgress, Input, InputAdornment } from '@mui/material';
+import { CircularProgress, InputAdornment } from '@mui/material';
 import { AutocompleteInputChangeReason } from '@mui/base/useAutocomplete/useAutocomplete';
 
-const SearchCrypto = () => {
+const SearchCrypto = (props: {
+  coinId: string;
+  setCoinId: any;
+  categoryId: string;
+  setCategoryId: any;
+}) => {
+  const { setCoinId, setCategoryId } = props;
+
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   const [options, setOptions] = useState<any>([]);
@@ -26,12 +33,14 @@ const SearchCrypto = () => {
       };
     });
 
-    const category: Array<any> = data?.categories.map((eachCategory: any) => {
-      return {
-        type: CryptoDataType.Category,
-        ...eachCategory,
-      };
-    });
+    //Cannot get category id here
+    const category: Array<any> = [];
+    // const category: Array<any> = data?.categories.map((eachCategory: any) => {
+    //   return {
+    //     type: CryptoDataType.Category,
+    //     ...eachCategory,
+    //   };
+    // });
 
     return coins.concat(category);
   };
@@ -58,6 +67,15 @@ const SearchCrypto = () => {
           setIsLoading(false);
           setOptions([]);
         });
+    }
+  };
+
+  const onChange = (event: any, value: any) => {
+    if (value.type === CryptoDataType.COIN) {
+      setCoinId(value.id);
+    }
+    if (value.type === CryptoDataType.Category) {
+      setCategoryId(value.name);
     }
   };
 
@@ -106,8 +124,9 @@ const SearchCrypto = () => {
               component='li'
               sx={{ '& > img': { mr: 2, flexShrink: 0 } }}
               {...props}
+              key={option.id}
             >
-              {option?.thumb ? (
+              {option?.type === CryptoDataType.COIN ? (
                 <img loading='lazy' width='20' src={option.thumb} alt='' />
               ) : (
                 <ListIcon />
@@ -116,6 +135,7 @@ const SearchCrypto = () => {
             </Box>
           );
         }}
+        onChange={onChange}
       />
 
       {error && <AlertComp msg={error} />}

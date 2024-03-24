@@ -12,10 +12,6 @@ const prepareUrl = (
   headers: RawAxiosRequestHeaders;
   data: any;
 } => {
-  // let requestHeaders: AxiosHeaders;
-  // requestHeaders.set('Accept', 'application/json');
-  // await requestHeaders.set('Accept', 'application/json');
-
   return {
     url: `${host}${endpoint}`,
     headers: {
@@ -27,9 +23,14 @@ const prepareUrl = (
 export const coingeckoApi = {
   coins: {
     list: prepareUrl('coins/list'),
-    byId: (id: string) => prepareUrl(`coins/${id}`),
-    markets: (paginationModel: GridPaginationModel, sortModel: GridSortModel) =>
+    byId: (id: string, data: any) => prepareUrl(`coins/${id}`, data),
+    markets: (
+      categoryId: string,
+      paginationModel: GridPaginationModel,
+      sortModel: GridSortModel
+    ) =>
       prepareUrl(`coins/markets`, {
+        category: categoryId || null,
         precision: 2,
         vs_currency: 'usd',
         price_change_percentage: '1h,24h,7d',

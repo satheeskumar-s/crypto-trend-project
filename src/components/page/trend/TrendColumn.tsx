@@ -2,6 +2,7 @@ import { GridColDef, GridRenderCellParams } from '@mui/x-data-grid';
 import { GridValueGetterParams } from '@mui/x-data-grid/models/params/gridCellParams';
 import React from 'react';
 import { SparkLineChartProps } from '@mui/x-charts/SparkLineChart/SparkLineChart';
+import Coin from '../../shared/page/Coin';
 
 const RenderName = (
   props: GridRenderCellParams & {
@@ -11,10 +12,11 @@ const RenderName = (
   return (
     <>
       {props.value && (
-        <>
-          {props.value?.name} {props.value?.symbol}
-          <img width={24} height={24} alt='1' src={props.value?.thumb} />
-        </>
+        <Coin
+          name={props.value?.name}
+          symbol={props.value?.symbol}
+          image={props.value?.thumb}
+        />
       )}
     </>
   );
@@ -25,11 +27,7 @@ const RenderLast7Days = (
     plotType?: SparkLineChartProps['plotType'];
   }
 ) => {
-  return (
-    <>
-      <img alt='1' src={props.value} />
-    </>
-  );
+  return <img alt='S' src={props.value} />;
 };
 
 export const columns: GridColDef[] = [
@@ -50,7 +48,6 @@ export const columns: GridColDef[] = [
     valueGetter: (params: GridValueGetterParams) => params.row.data.price,
     sortable: false,
     width: 150,
-    align: 'center',
   },
   {
     field: 'total_volume',
