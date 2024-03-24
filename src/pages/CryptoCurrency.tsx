@@ -18,12 +18,7 @@ const CryptoCurrency = () => {
   const tabContent = [
     {
       id: 0,
-      content: (
-        <CurrencyList
-          setCoinId={setCoinId}
-          categoryId={categoryId}
-        />
-      ),
+      content: <CurrencyList setCoinId={setCoinId} categoryId={categoryId} />,
     },
     { id: 1, content: <CategoryList /> },
   ];
@@ -40,16 +35,15 @@ const CryptoCurrency = () => {
       />
       <TabComp tabs={tabs} tabContent={tabContent} />
 
-        {coinId !== '' && (
-            <CurrencyInfo
-                coinId={coinId}
-                isOpen={!!coinId}
-                onClose={() => {
-                    setCoinId('');
-                }}
-            />
-        )}
-
+      {coinId !== '' && (
+        <CurrencyInfo
+          coinId={coinId}
+          isOpen={!!coinId}
+          onClose={() => {
+            setCoinId('');
+          }}
+        />
+      )}
     </>
   );
 };

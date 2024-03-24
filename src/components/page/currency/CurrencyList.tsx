@@ -14,10 +14,7 @@ import { GridRowParams } from '@mui/x-data-grid/models/params';
 import { DataGrid } from '@mui/x-data-grid';
 import { LinearProgress } from '@mui/material';
 
-const CurrencyList = (props: {
-  setCoinId: any;
-  categoryId: string;
-}) => {
+const CurrencyList = (props: { setCoinId: any; categoryId: string }) => {
   const { setCoinId, categoryId } = props;
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState('');
