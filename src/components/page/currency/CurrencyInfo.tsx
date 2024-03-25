@@ -1,10 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import {
-  CircularProgress,
-  Dialog,
-  DialogContent,
-  DialogTitle,
-} from '@mui/material';
+import { Dialog, DialogContent, DialogTitle } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import CloseBtnComp from '../../shared/modal/CloseBtnComp';
 import SparkLineChartComp from '../../shared/graph/SparkLineChartComp';
@@ -12,6 +7,7 @@ import Coin from '../../shared/page/Coin';
 import { coingeckoApi } from '../../../providers/api/coingecko';
 import axios from 'axios';
 import { AlertComp } from '../../shared/message/AlertComp';
+import CircleLoaderComp from '../../shared/page/CircleLoaderComp';
 
 const CurrencyInfo = (props: {
   coinId: string;
@@ -46,41 +42,45 @@ const CurrencyInfo = (props: {
   return (
     <Dialog open={isOpen} onClose={onClose}>
       {isLoading ? (
-        <CircularProgress />
+        <CircleLoaderComp />
       ) : (
         <>
-          {error !== '' && <AlertComp msg={error} severity='error' />}
-
-          <DialogTitle>
-            <Coin
-              name={data?.name}
-              symbol={data?.symbol}
-              image={data?.image?.thumb}
-            />
-          </DialogTitle>
-          <CloseBtnComp onClose={onClose} />
-          <DialogContent dividers>
-            <Typography gutterBottom>{data?.description?.en}</Typography>
-
-            <Typography variant='h6' gutterBottom>
-              Current price : $ {data?.market_data?.current_price?.usd}
-            </Typography>
-
-            {data?.market_data?.sparkline_7d?.price && (
-              <>
-                <Typography variant='h5' gutterBottom>
-                  Last 7 days history
-                </Typography>
-                <SparkLineChartComp
-                  data={data?.market_data?.sparkline_7d?.price}
-                  width={400}
-                  height={200}
-                  plotType='line'
-                  border={1}
+          {error !== '' ? (
+            <AlertComp msg={error} severity='error' />
+          ) : (
+            <>
+              <DialogTitle>
+                <Coin
+                  name={data?.name}
+                  symbol={data?.symbol}
+                  image={data?.image?.thumb}
                 />
-              </>
-            )}
-          </DialogContent>
+              </DialogTitle>
+              <CloseBtnComp onClose={onClose} />
+              <DialogContent dividers>
+                <Typography gutterBottom>{data?.description?.en}</Typography>
+
+                <Typography variant='h6' gutterBottom>
+                  Current price : $ {data?.market_data?.current_price?.usd}
+                </Typography>
+
+                {data?.market_data?.sparkline_7d?.price && (
+                  <>
+                    <Typography variant='h5' gutterBottom>
+                      Last 7 days history
+                    </Typography>
+                    <SparkLineChartComp
+                      data={data?.market_data?.sparkline_7d?.price}
+                      width={400}
+                      height={200}
+                      plotType='line'
+                      border={1}
+                    />
+                  </>
+                )}
+              </DialogContent>
+            </>
+          )}
         </>
       )}
     </Dialog>
