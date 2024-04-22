@@ -12,6 +12,8 @@ import { AlertComp } from '../../shared/message/AlertComp';
 import axios from 'axios';
 import { CircularProgress, InputAdornment } from '@mui/material';
 import { AutocompleteInputChangeReason } from '@mui/base/useAutocomplete/useAutocomplete';
+import { search } from '../../../data/sample/search';
+import { USE_TEST_DATA } from '../../../config/env';
 
 const SearchCrypto = (props: {
   coinId: string;
@@ -51,6 +53,11 @@ const SearchCrypto = (props: {
     reason: AutocompleteInputChangeReason
   ) => {
     if (reason === 'input') {
+      if (USE_TEST_DATA) {
+        setOptions(prepareOption(search));
+        return;
+      }
+
       setIsLoading(true);
       const fetchUrl = coingeckoApi.search(option);
       axios(fetchUrl.url, {

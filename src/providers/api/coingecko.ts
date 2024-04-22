@@ -16,6 +16,7 @@ const prepareUrl = (
     url: `${host}${endpoint}`,
     headers: {
       Accept: 'application/json',
+      'Cache-Control': 'public, max-age=120',
     },
     data,
   };

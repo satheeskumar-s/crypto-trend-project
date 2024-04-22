@@ -4,6 +4,8 @@ import React from 'react';
 import { SparkLineChartProps } from '@mui/x-charts/SparkLineChart/SparkLineChart';
 import SparkLineChartComp from '../../shared/graph/SparkLineChartComp';
 import Coin from '../../shared/page/Coin';
+import PriceWithSeparator from '../../shared/page/PriceWithSeparator';
+import { columnAttribute } from '../../shared/table/ColumnComp';
 
 const RenderTitle = (
   props: GridRenderCellParams & {
@@ -41,58 +43,60 @@ const GridSparklineCell = (
   );
 };
 
-export const columns: GridColDef[] = [
-  {
+export const getColumns = (isLoading?: boolean): GridColDef[] => [
+  columnAttribute({
+    isLoading,
     field: 'id',
     headerName: 'Coin',
     type: 'number',
-    width: 200,
-    align: 'left',
     valueGetter: (params: GridValueGetterParams) => params.row,
     renderCell: (params) => <RenderTitle {...params} />,
-    // sortable: false
-  },
-  {
+  }),
+  columnAttribute({
+    isLoading,
     field: 'current_price',
     headerName: 'Price',
-    // type: 'number',
-    width: 90,
     sortable: false,
-  },
-  {
+    valueGetter: (params: GridValueGetterParams) => params.row,
+    renderCell: (params) => (
+      <PriceWithSeparator price={params.value?.current_price} />
+    ),
+  }),
+  columnAttribute({
+    isLoading,
     field: 'price_change_percentage_1h_in_currency',
     headerName: '1h',
     type: 'number',
-    width: 90,
     sortable: false,
-  },
-  {
+  }),
+  columnAttribute({
+    isLoading,
     field: 'price_change_percentage_24h_in_currency',
     headerName: '1d',
     type: 'number',
-    width: 90,
     sortable: false,
-  },
-  {
+  }),
+  columnAttribute({
+    isLoading,
     field: 'price_change_percentage_7d_in_currency',
     headerName: '7d',
     type: 'number',
-    width: 90,
     sortable: false,
-  },
-  {
+  }),
+  columnAttribute({
+    isLoading,
     field: 'market_cap',
     headerName: 'Market cap',
     type: 'number',
-    width: 90,
-  },
-  {
+  }),
+  columnAttribute({
+    isLoading,
     field: 'sparkline_in_7d',
     headerName: '7 Days activity',
     sortable: false,
-    width: 200,
-    valueGetter: (params: GridValueGetterParams) =>
-      params.row.sparkline_in_7d.price,
+    valueGetter: (params: GridValueGetterParams) => {
+      return params?.row?.sparkline_in_7d?.price;
+    },
     renderCell: (params) => <GridSparklineCell {...params} plotType='line' />,
-  },
+  }),
 ];

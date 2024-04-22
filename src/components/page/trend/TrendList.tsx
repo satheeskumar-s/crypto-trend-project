@@ -7,11 +7,13 @@ import { defaultPerPage } from '../../../config/pagination';
 import { columns } from './TrendColumn';
 import axios from 'axios';
 import { LinearProgress } from '@mui/material';
+import { trends } from '../../../data/sample/trends';
+import { USE_TEST_DATA } from '../../../config/env';
 
 const TrendList = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
-  const [data, setData] = useState([]);
+  const [data, setData] = useState<any>([]);
 
   function setErr(msg: string) {
     setError(msg);
@@ -19,6 +21,11 @@ const TrendList = () => {
   }
 
   const getTrendData = () => {
+    if (USE_TEST_DATA) {
+      setData(trends.coins.map((eachCoin: any) => eachCoin.item));
+      return;
+    }
+
     setIsLoading(true);
     const fetchUrl = coingeckoApi.trend;
     axios(fetchUrl.url, {

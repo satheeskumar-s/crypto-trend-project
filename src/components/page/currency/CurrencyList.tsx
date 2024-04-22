@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import {
   GridSortDirection,
   GridSortModel,
@@ -7,18 +7,25 @@ import { GridPaginationModel } from '@mui/x-data-grid/models/gridPaginationProps
 
 import { coingeckoApi } from '../../../providers/api/coingecko';
 import { AlertComp } from '../../shared/message/AlertComp';
-import { defaultPerPage } from '../../../config/pagination';
-import { columns } from './CurrencyColumn';
+import {
+  defaultLoadingRowCount,
+  defaultPerPage,
+} from '../../../config/pagination';
+import { getColumns } from './CurrencyColumn';
 import axios from 'axios';
 import { GridRowParams } from '@mui/x-data-grid/models/params';
-import { DataGrid } from '@mui/x-data-grid';
+import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import { LinearProgress } from '@mui/material';
+import { sampleRowFromColumn } from '../../shared/table/RowComp';
+import { coinList } from '../../../data/sample/coinList';
+import { USE_TEST_DATA } from '../../../config/env';
 
 const CurrencyList = (props: { setCoinId: any; categoryId: string }) => {
   const { setCoinId, categoryId } = props;
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState('');
-  const [data, setData] = useState([]);
+  const [columns, setColumns] = useState<Array<GridColDef>>([]);
+  const [data, setData] = useState<any>([]);
   const [rowCount, setRowCount] = useState(13450);
   const [sortModel, setSortModel] = useState<
     Array<{ field: string; sort: GridSortDirection }>
@@ -33,15 +40,28 @@ const CurrencyList = (props: { setCoinId: any; categoryId: string }) => {
     page: 0,
   });
 
+  useEffect(() => {
+    setColumns(getColumns(isLoading));
+  }, [isLoading]);
+
+  const rows = sampleRowFromColumn(columns);
   function setErr(msg: string) {
     setError(msg);
   }
+
+  console.log({ data });
 
   /**
    * Note that, there is no any api to get total count of coins.
    * So total count set by getting all coins list and then count
    */
   const setTotalCountAndGetData = () => {
+    if (USE_TEST_DATA) {
+      setRowCount(100000);
+      getCoinsData();
+      return;
+    }
+
     const fetchUrl = coingeckoApi.coins.list;
     setIsLoading(true);
     axios(fetchUrl.url, {
@@ -66,6 +86,13 @@ const CurrencyList = (props: { setCoinId: any; categoryId: string }) => {
   };
 
   const getCoinsData = () => {
+    if (USE_TEST_DATA) {
+      setIsLoading(false);
+      setData(coinList);
+
+      return;
+    }
+
     setIsLoading(true);
     const fetchUrl = coingeckoApi.coins.markets(
       categoryId,
@@ -121,7 +148,7 @@ const CurrencyList = (props: { setCoinId: any; categoryId: string }) => {
       {error && <AlertComp msg={error} severity='error' />}
 
       <DataGrid
-        rows={data}
+        rows={isLoading ? rows : data}
         columns={columns}
         initialState={{
           pagination: {
@@ -133,7 +160,7 @@ const CurrencyList = (props: { setCoinId: any; categoryId: string }) => {
         onSortModelChange={onSortModelChange}
         paginationModel={paginationModel}
         onPaginationModelChange={onPaginationModelChange}
-        rowCount={rowCount}
+        rowCount={isLoading ? defaultLoadingRowCount : rowCount}
         disableColumnFilter
         disableColumnMenu
         paginationMode='server'

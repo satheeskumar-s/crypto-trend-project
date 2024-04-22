@@ -9,3 +9,6 @@
 
 ### Check lint
 `npm run lint`
+
+### Prettier format and tsc check
+`npm run lint:fix`
