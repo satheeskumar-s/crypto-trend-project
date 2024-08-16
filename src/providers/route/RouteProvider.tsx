@@ -10,6 +10,7 @@ import {
 import Trend from '../../pages/Trend';
 import About from '../../pages/About';
 import CryptoCurrency from '../../pages/CryptoCurrency';
+import { Calander } from '../../calander/Calander';
 
 export type RouteType = {
   url: string;
@@ -35,6 +36,12 @@ const routes: Array<RouteType> = [
     label: 'About',
     icon: HelpOutline,
     component: <About />,
+  },
+  {
+    url: '/cal',
+    label: 'Cal',
+    icon: HelpOutline,
+    component: <Calander />,
   },
 ];
 
